@@ -6,11 +6,7 @@ import android.content.Context;
 import android.util.Log;
 import android.graphics.PointF;
 
-import com.joanzapata.pdfview.PDFView;
-import com.joanzapata.pdfview.listener.OnPageChangeListener;
-import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 
-import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.Arguments;
@@ -19,11 +15,14 @@ import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.facebook.react.uimanager.events.RCTEventEmitter;
-import com.facebook.react.common.MapBuilder;
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
+import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 
 import static java.lang.String.format;
 
-public class PDFViewManager extends SimpleViewManager<PDFView> implements OnPageChangeListener,OnLoadCompleteListener {
+public class PDFViewManager extends SimpleViewManager<PDFView> implements OnPageChangeListener, OnLoadCompleteListener {
     private static final String REACT_CLASS = "RCTPDFViewAndroid";
     private Context context;
     private PDFView pdfView;
@@ -75,7 +74,8 @@ public class PDFViewManager extends SimpleViewManager<PDFView> implements OnPage
         if (assetName != null) {
             pdfView.fromAsset(assetName)
                 .defaultPage(pageNumber)
-                .swipeVertical(true)
+                .enableAnnotationRendering(true)
+                .scrollHandle(new DefaultScrollHandle(context))
                 .onPageChange(this)
                 .onLoad(this)
                 .load();
@@ -85,9 +85,8 @@ public class PDFViewManager extends SimpleViewManager<PDFView> implements OnPage
             File pdfFile = new File(filePath);
             pdfView.fromFile(pdfFile)
                 .defaultPage(pageNumber)
-                //.showMinimap(false)
-                //.enableSwipe(true)
-                .swipeVertical(true)
+                .enableAnnotationRendering(true)
+                .scrollHandle(new DefaultScrollHandle(context))
                 .onPageChange(this)
                 .onLoad(this)
                 .load();
