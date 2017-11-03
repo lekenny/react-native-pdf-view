@@ -15,6 +15,11 @@
     "pdf",
     "view"
   ],
+  "peerDependencies": {
+    "react": ">=15.4.2",
+    "react-native": ">=0.43.0",
+    "prop-types": "^15.6.0"
+  },
   "author": {
     "name": "cnjon",
     "url": "https://github.com/cnjon"
